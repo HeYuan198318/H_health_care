@@ -1,0 +1,7 @@
+com\hy\service\CheckItemService.class
+com\hy\service\OrderSettingService.class
+com\hy\service\CheckGroupService.class
+com\hy\service\SetmealService.class
+com\hy\service\OrderService.class
+com\hy\service\UserService.class
+com\hy\service\MemberService.class
