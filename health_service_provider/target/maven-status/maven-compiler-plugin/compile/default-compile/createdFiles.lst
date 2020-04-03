@@ -1,0 +1,16 @@
+com\hy\dao\SetmealDao.class
+com\hy\dao\PermissionDao.class
+com\hy\dao\OrderDao.class
+com\hy\dao\CheckGroupDao.class
+com\hy\dao\CheckItemDao.class
+com\hy\service\impl\OrderSettingServiceImpl.class
+com\hy\service\impl\SetmealServiceImpl.class
+com\hy\dao\RoleDao.class
+com\hy\service\impl\MemberServiceImpl.class
+com\hy\service\impl\OrderServiceImpl.class
+com\hy\dao\UserDao.class
+com\hy\dao\MemberDao.class
+com\hy\dao\OrderSettingDao.class
+com\hy\service\impl\CheckGroupServiceImpl.class
+com\hy\service\impl\UserServiceImpl.class
+com\hy\service\impl\CheckItemServiceImpl.class
