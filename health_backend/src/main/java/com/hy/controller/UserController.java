@@ -37,8 +37,7 @@ public class UserController {
             return new Result(false, MessageConstant.GET_USERNAME_FAIL);
         }
     }
-}
-//
+
 //    @RequestMapping("/findAll")
 //    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
 //        PageResult pageResult = userService.pageQuery(
@@ -104,4 +103,4 @@ public class UserController {
 //        return new Result(true,MessageConstant.QUERY_ROLE_SUCCESS,roleIds);
 //    }
 
-//}
+}

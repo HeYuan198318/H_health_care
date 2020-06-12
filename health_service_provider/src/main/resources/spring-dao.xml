@@ -17,6 +17,7 @@
 							http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!--数据源-->
+    <context:property-placeholder location=""/>
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <property name="username" value="root" />
         <property name="password" value="HY1998@" />

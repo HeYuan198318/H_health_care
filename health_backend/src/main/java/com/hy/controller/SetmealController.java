@@ -6,6 +6,7 @@ import com.hy.constant.RedisConstant;
 import com.hy.entity.PageResult;
 import com.hy.entity.QueryPageBean;
 import com.hy.entity.Result;
+import com.hy.pojo.CheckGroup;
 import com.hy.pojo.Setmeal;
 import com.hy.service.SetmealService;
 import com.hy.utils.QiniuUtils;
@@ -73,6 +74,18 @@ public class SetmealController {
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
         return setmealService.pageQuery(queryPageBean);
+    }
+
+    //编辑套餐
+    @RequestMapping("/edit")
+    public Result edit(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
+        try{
+            setmealService.edit(setmeal,checkgroupIds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, MessageConstant.EDIT_SETMEAL_FAIL);//编辑失败
+        }
+        return new Result(true,MessageConstant.EDIT_SETMEAL_SUCCESS);//编辑成功
     }
 
 }

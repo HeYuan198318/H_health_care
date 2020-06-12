@@ -100,9 +100,9 @@ public class CheckGroupController {
             checkGroupService.deleteGroupById(id);
         }catch (Exception e){
             e.printStackTrace();
-            return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
+            return new Result(false, MessageConstant. DELETE_CHECKGROUP_FAIL);
         }
-        return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS);
+        return new Result(true,MessageConstant. DELETE_CHECKGROUP_SUCCESS);
     }
 
 }

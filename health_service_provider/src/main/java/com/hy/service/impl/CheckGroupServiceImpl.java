@@ -3,6 +3,7 @@ package com.hy.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hy.dao.CheckGroupDao;
 import com.hy.entity.PageResult;
 import com.hy.entity.QueryPageBean;
@@ -39,6 +40,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         Integer pageSize = queryPageBean.getPageSize();
         String queryString = queryPageBean.getQueryString();
         PageHelper.startPage(currentPage,pageSize);
+
+        List<CheckGroup> checkGroups=checkGroupDao.findAll();
+        PageInfo pageInfo=new PageInfo(checkGroups,5);
+
         Page<CheckGroup> page = checkGroupDao.findByCondition(queryString);
         return new PageResult(page.getTotal(),page.getResult());
     }

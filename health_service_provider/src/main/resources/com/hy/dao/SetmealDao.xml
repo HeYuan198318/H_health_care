@@ -65,5 +65,39 @@
     <select id="findSetmealCount" resultType="map">
        select s.name,count(o.id) as value from t_order o ,t_setmeal s where o.setmeal_id = s.id group by s.name
     </select>
+    <update id="edit" parameterType="com.hy.pojo.Setmeal">
+        update t_setmeal
+        <set>helpCode,remark,attention,age,price,img
+            <if test="code != null">
+                name = #{code},
+            </if>
+            <if test="name != null">
+                sex = #{name},
+            </if>
+            <if test="sex != null">
+                code = #{sex},
+            </if>
+            <if test="helpCode != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="age != null">
+                age = #{age}
+            </if>
+            <if test="price ！= null">
+                price = #{price}
+            </if>
+            <if test="img !=null">
+                img = #{img}
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

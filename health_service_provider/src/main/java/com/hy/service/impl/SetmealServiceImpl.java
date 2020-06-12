@@ -152,6 +152,18 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealDao.findSetmealCount();
     }
 
+    @Override
+    public void edit(Setmeal setmeal, Integer[] checkgroupIds) {
+        //修改检查组基本信息，t_setmeal表
+        setmealDao.edit(setmeal);
+        //根据检查组ID清理关联的检查项信息，操作的表t_checkgroup_setmeal
+        setmealDao.deleteAssocication(setmeal.getId());
+        //重新建立当前检查组和检查项的关联关系
+        Integer setmealId = setmeal.getId();
+        this.setSetmealAndCheckGroup(setmealId,checkgroupIds);
+    }
+
+
     //设置套餐和检查组多对多关系，操作t_setmeal_checkgroup
     public void setSetmealAndCheckGroup(Integer setmealId,Integer[] checkgroupIds){
         if(checkgroupIds != null && checkgroupIds.length > 0){

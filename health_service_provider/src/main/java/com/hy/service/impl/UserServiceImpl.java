@@ -1,9 +1,12 @@
 package com.hy.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.hy.dao.PermissionDao;
 import com.hy.dao.RoleDao;
 import com.hy.dao.UserDao;
+import com.hy.entity.PageResult;
 import com.hy.pojo.Permission;
 import com.hy.pojo.Role;
 import com.hy.pojo.User;
@@ -11,6 +14,9 @@ import com.hy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service(interfaceClass = UserService.class)
@@ -47,4 +53,56 @@ public class UserServiceImpl implements UserService {
             return user;
         }
     }
+
+    @Override
+    public PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString) {
+        PageHelper.startPage(currentPage,pageSize);
+        Page<User> page = userDao.findByCondition(queryString);
+
+        return new PageResult(page.getTotal(),page.getResult());
+
+    }
+
+    @Override
+    public void add(User user, Integer[] roles) {
+        userDao.add(user);
+        //设置检查组和检查项的多对多的关联关系，操作t_checkgroup_checkitem表
+        Integer userId = user.getId();
+        this.setUserAndRoles(userId,roles);
+
+    }
+    //建立检查组和检查项多对多关系
+    private void setUserAndRoles(Integer userId, Integer[] roles) {
+        if( roles != null && roles.length > 0){
+            for (Integer roleId : roles) {
+                Map<String,Integer> map = new HashMap<>();
+                map.put("checkgroupId",userId);
+                map.put("checkitemId",roleId);
+                userDao.setUserAndRoles(map);
+            }
+        }
+    }
+
+    @Override
+    public User findRoles() {
+        return null;
+    }
+
+    @Override
+    public void update(User user, Integer[] roles) {
+
+    }
+
+    @Override
+    public List<Integer> findByRoleIds(Integer id) {
+        return null;
+    }
+
+    @Override
+    public User findById(Integer id) {
+        return userDao.findById(id);
+    }
+
+
+
 }
