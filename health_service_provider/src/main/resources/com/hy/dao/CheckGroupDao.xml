@@ -28,7 +28,7 @@
             select LAST_INSERT_ID()
         </selectKey>
         insert into t_checkgroup(code,name,sex,helpCode,remark,attention)
-                      values
+        values
         (#{code},#{name},#{sex},#{helpCode},#{remark},#{attention})
     </insert>
 
@@ -99,7 +99,8 @@
 
     <!--根据套餐ID查询关联的检查组详情-->
     <select id="findCheckGroupById" parameterType="int" resultMap="findByIdResultMap">
-        select * from t_checkgroup where id in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{setmeal_id})
+        select * from t_checkgroup where id in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id =
+        #{setmeal_id})
     </select>
 
 </mapper>

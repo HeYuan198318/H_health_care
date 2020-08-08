@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface UserDao {
     public User findByUsername(String username);
+
     //分页查询
     Page<User> findByCondition(String queryString);
 

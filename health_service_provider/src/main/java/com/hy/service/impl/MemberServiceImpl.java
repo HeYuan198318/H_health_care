@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
     //新增会员
     public void add(Member member) {
-        if (member.getPassword() != null){
+        if (member.getPassword() != null) {
             //用户密码加密
             member.setPassword(MD5Utils.md5(member.getPassword()));
         }
@@ -39,10 +39,10 @@ public class MemberServiceImpl implements MemberService {
     //根据月份查找会员总数
     @Override
     public List<Integer> findCountByMonths(List<String> months) {
-        List<Integer> list=new ArrayList<>();
-        for(String m: months){
-            m=m+".31";//格式:2019.04.31
-            Integer count=memberDao.findMemberCountBeforeDate(m);
+        List<Integer> list = new ArrayList<>();
+        for (String m : months) {
+            m = m + ".31";//格式:2019.04.31
+            Integer count = memberDao.findMemberCountBeforeDate(m);
             list.add(count);
         }
         return list;

@@ -37,20 +37,21 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
+
     @Value("${out_put_path}")
     private String outPutPath;
 
     @Override
     public void add(Setmeal setmeal, Integer[] checkgroupIds) {
         setmealDao.add(setmeal);
-        if (checkgroupIds!=null && checkgroupIds.length>0){
+        if (checkgroupIds != null && checkgroupIds.length > 0) {
             //绑定套餐和检查组的多对多关系
             Integer setmealId = setmeal.getId();
-            this.setSetmealAndCheckGroup(setmealId,checkgroupIds);
+            this.setSetmealAndCheckGroup(setmealId, checkgroupIds);
         }
         //将图片名称保存到Redis集合中
         String fileName = setmeal.getImg();
-        jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES,fileName);
+        jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, fileName);
 
 //        //当添加套餐后需要重新生成静态页面（套餐列表页面、套餐详情页面）
 //        generateMobileStaticHtml();
@@ -64,9 +65,10 @@ public class SetmealServiceImpl implements SetmealService {
         //准备模板文件中所需的数据
         List<Setmeal> list = setmealDao.findAll();
         //生成套餐列表静态页面
-        generateMobileSetmealListHtml( list );
+        generateMobileSetmealListHtml(list);
         //生成套餐详情静态页面（多个）
-        generateMobileSetmealDetailHtml( list );
+        generateMobileSetmealDetailHtml(list);
+
     }
 
     /**
@@ -77,8 +79,8 @@ public class SetmealServiceImpl implements SetmealService {
     private void generateMobileSetmealListHtml(List<Setmeal> list) {
         Map<String, Object> dataMap = new HashMap<>();
         //为模板提供数据，用于生成静态页面
-        dataMap.put( "setmealList", list );
-        generateHtml( "mobile_setmeal.ftl", "m_setmeal.html", dataMap );
+        dataMap.put("setmealList", list);
+        generateHtml("mobile_setmeal.ftl", "m_setmeal.html", dataMap);
     }
 
     /**
@@ -90,8 +92,8 @@ public class SetmealServiceImpl implements SetmealService {
         for (Setmeal setmeal : list) {
             Map<String, Object> dataMap = new HashMap<>();
             //为模板提供对应id所有数据
-            dataMap.put( "setmeal", setmealDao.findById( setmeal.getId() ) );
-            generateHtml( "mobile_setmeal_detail.ftl", "setmeal_detail_" + setmeal.getId() + ".html", dataMap );
+            dataMap.put("setmeal", setmealDao.findById(setmeal.getId()));
+            generateHtml("mobile_setmeal_detail.ftl", "setmeal_detail_" + setmeal.getId() + ".html", dataMap);
         }
     }
 
@@ -108,19 +110,19 @@ public class SetmealServiceImpl implements SetmealService {
         BufferedWriter writer = null;
         try {
             //选定生成模板
-            Template template = configuration.getTemplate( templateName );
+            Template template = configuration.getTemplate(templateName);
             //生成数据
-            File docFile=new File(outPutPath+"\\"+htmlPageName);
+            File docFile = new File(outPutPath + "\\" + htmlPageName);
             //构造输出流
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(docFile)));
             //输出文件
-            template.process( dateMap, writer );
+            template.process(dateMap, writer);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 //流不为空进行关闭
-                Objects.requireNonNull( writer ).close();
+                Objects.requireNonNull(writer).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,9 +134,9 @@ public class SetmealServiceImpl implements SetmealService {
         Integer currentPage = queryPageBean.getCurrentPage();
         Integer pageSize = queryPageBean.getPageSize();
         String queryString = queryPageBean.getQueryString();
-        PageHelper.startPage(currentPage,pageSize);
+        PageHelper.startPage(currentPage, pageSize);
         Page<Setmeal> page = setmealDao.findByCondition(queryString);
-        return new PageResult(page.getTotal(),page.getResult());
+        return new PageResult(page.getTotal(), page.getResult());
     }
 
     @Override
@@ -158,19 +160,27 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDao.edit(setmeal);
         //根据检查组ID清理关联的检查项信息，操作的表t_checkgroup_setmeal
         setmealDao.deleteAssocication(setmeal.getId());
-        //重新建立当前检查组和检查项的关联关系
+        //重新建立当前检查套餐和检查组的关联关系
         Integer setmealId = setmeal.getId();
-        this.setSetmealAndCheckGroup(setmealId,checkgroupIds);
+        this.setSetmealAndCheckGroup(setmealId, checkgroupIds);
+    }
+
+    @Override
+    public void deletesetmealById(Integer id) {
+        //删除检查组基本信息，t_checkgroup表
+        setmealDao.deletesetmealById(id);
+        //根据检查组ID清理关联的检查项信息，操作的表t_checkgroup_checkitem
+        setmealDao.deleteAssocication(id);
     }
 
 
     //设置套餐和检查组多对多关系，操作t_setmeal_checkgroup
-    public void setSetmealAndCheckGroup(Integer setmealId,Integer[] checkgroupIds){
-        if(checkgroupIds != null && checkgroupIds.length > 0){
+    public void setSetmealAndCheckGroup(Integer setmealId, Integer[] checkgroupIds) {
+        if (checkgroupIds != null && checkgroupIds.length > 0) {
             for (Integer checkgroupId : checkgroupIds) {
-                Map<String,Integer> map = new HashMap<>();
-                map.put("setmealId",setmealId);
-                map.put("checkgroupId",checkgroupId);
+                Map<String, Integer> map = new HashMap<>();
+                map.put("setmealId", setmealId);
+                map.put("checkgroupId", checkgroupId);
                 setmealDao.setSetmealAndCheckGroup(map);
             }
         }

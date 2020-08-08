@@ -11,7 +11,7 @@
     <!--插入检查项数据-->
     <insert id="add" parameterType="com.hy.pojo.CheckItem">
         insert into t_checkitem(code,name,sex,age,price,type,remark,attention)
-                      values
+        values
         (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
     </insert>
 
@@ -74,6 +74,6 @@
     <select id="findCheckItemById" parameterType="int" resultType="com.hy.pojo.CheckItem">
         select * from t_checkitem
         where id
-  	    in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
+        in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
     </select>
 </mapper>

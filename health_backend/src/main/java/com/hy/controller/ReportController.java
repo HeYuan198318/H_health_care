@@ -21,33 +21,34 @@ public class ReportController {
     private MemberService memberService;
     @Reference
     private SetmealService setmealService;
+
     /**
      * 会员数量统计
      */
     @RequestMapping("/getMemberReport")
-    public Result getMemberReport(){
+    public Result getMemberReport() {
         //创建一个map封装data{"months":months,"memberCount",memberCount}
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         List<String> months = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();//获取当前日期
-        calendar.add(Calendar.MONTH,-12);//将当前日期向前推迟1年
+        calendar.add(Calendar.MONTH, -12);//将当前日期向前推迟1年
         for (int i = 0; i < 12; i++) {
-            calendar.add(Calendar.MONDAY,+1);//从一年前的日期每月像后加
+            calendar.add(Calendar.MONDAY, +1);//从一年前的日期每月像后加
             String month = new SimpleDateFormat("yyyy.MM").format(calendar.getTime());
             months.add(month);
         }
-        map.put("months",months);
+        map.put("months", months);
 
         //根据数据库查询每月的会员注册人数
         List<Integer> memberCount = memberService.findCountByMonths(months);
-        map.put("memberCount",memberCount);
+        map.put("memberCount", memberCount);
 
-        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,map);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, map);
     }
 
     //套餐预约饼状图
     @RequestMapping("/getSetmealReport")
-    public Result getSetmealReport(){
+    public Result getSetmealReport() {
         //最重要的是分析数据格式
         /*data{
             setmealNames:["套餐一","套餐二"],
@@ -58,26 +59,26 @@ public class ReportController {
         }*/
         //创建Map集合
         try {
-            Map<String,Object> data = new HashMap<>();
+            Map<String, Object> data = new HashMap<>();
             //封装饼状图中的区域
-            List<Map<String,Object>> setmealCount =setmealService.findSetmealCount();
+            List<Map<String, Object>> setmealCount = setmealService.findSetmealCount();
 
             //封装侧标题名
             //List<String> setmealNames =setmealService.findAllsetmealNames();
-            List<String> setmealNames=new ArrayList<>();
-            if(setmealCount != null && setmealCount.size() > 0){
-                for (Map<String,Object> map : setmealCount) {
+            List<String> setmealNames = new ArrayList<>();
+            if (setmealCount != null && setmealCount.size() > 0) {
+                for (Map<String, Object> map : setmealCount) {
                     String name = (String) map.get("name");//套餐名称
                     setmealNames.add(name);
                 }
             }
 
-            data.put("setmealNames",setmealNames);
-            data.put("setmealCount",setmealCount);
-            return new Result(true,MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS,data);
+            data.put("setmealNames", setmealNames);
+            data.put("setmealCount", setmealCount);
+            return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, data);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false,MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
+            return new Result(false, MessageConstant.GET_SETMEAL_COUNT_REPORT_FAIL);
         }
     }
 

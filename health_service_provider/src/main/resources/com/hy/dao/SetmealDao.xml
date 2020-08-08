@@ -34,7 +34,7 @@
             select LAST_INSERT_ID()
         </selectKey>
         insert into t_setmeal(code,name,sex,helpCode,remark,attention,age,price,img)
-                      values
+        values
         (#{code},#{name},#{sex},#{helpCode},#{remark},#{attention},#{age},#{price},#{img})
     </insert>
 
@@ -63,7 +63,7 @@
     </select>
 
     <select id="findSetmealCount" resultType="map">
-       select s.name,count(o.id) as value from t_order o ,t_setmeal s where o.setmeal_id = s.id group by s.name
+        select s.name,count(o.id) as value from t_order o ,t_setmeal s where o.setmeal_id = s.id group by s.name
     </select>
     <update id="edit" parameterType="com.hy.pojo.Setmeal">
         update t_setmeal
@@ -99,5 +99,15 @@
         </set>
         where id = #{id}
     </update>
+
+    <!--根据检查组ID清理关联的检查组信息，操作的表t_setmeal_checkgroup-->
+    <delete id="deleteAssocication" parameterType="int">
+        delete from t_setmeal_checkgroup where setmeal_id = #{id}
+    </delete>
+
+    <!--根据检查组ID删除检查组基本信息-->
+    <delete id="deletesetmealById" parameterType="int">
+        delete from t_setmeal where id = #{id}
+    </delete>
 
 </mapper>

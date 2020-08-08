@@ -15,11 +15,11 @@ import com.qiniu.util.Auth;
  */
 public class QiniuUtils {
 
-    public  static String accessKey = "qPFdtlvd2yeejQhYfjrtT-n-mEF5x78Ra6rpqmSr";
-    public  static String secretKey = "GvHsSL1UnsLsMVmgeu9Uzh0VjGiSO60Eij0_dhc_";
-    public  static String bucket = "hy-health-1";
+    public static String accessKey = "qPFdtlvd2yeejQhYfjrtT-n-mEF5x78Ra6rpqmSr";
+    public static String secretKey = "GvHsSL1UnsLsMVmgeu9Uzh0VjGiSO60Eij0_dhc_";
+    public static String bucket = "hy-health-1";
 
-    public static void upload2Qiniu(String filePath,String fileName){
+    public static void upload2Qiniu(String filePath, String fileName) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Region.huanan());
         UploadManager uploadManager = new UploadManager(cfg);
@@ -40,7 +40,7 @@ public class QiniuUtils {
     }
 
     //上传文件
-    public static void upload2Qiniu(byte[] bytes, String fileName){
+    public static void upload2Qiniu(byte[] bytes, String fileName) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Region.huanan());
         //...其他参数参考类注释
@@ -68,7 +68,7 @@ public class QiniuUtils {
     }
 
     //删除文件
-    public static void deleteFileFromQiniu(String fileName){
+    public static void deleteFileFromQiniu(String fileName) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Region.huanan());
         String key = fileName;

@@ -24,25 +24,25 @@ public class SpringSecurityUserService implements UserDetailsService {
 
     //根据用户名查询数据库获取用户信息
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=userService.findByUsername(username);
-        if (user == null){
+        User user = userService.findByUsername(username);
+        if (user == null) {
             //用户不存在
             return null;
-        }else {
-            List<GrantedAuthority> list=new ArrayList<>();
+        } else {
+            List<GrantedAuthority> list = new ArrayList<>();
             //动态当前用户授权
-            Set<Role> roles=user.getRoles();
-            for (Role role:roles){
+            Set<Role> roles = user.getRoles();
+            for (Role role : roles) {
                 //遍历角色集合,为用户授予角色
                 list.add(new SimpleGrantedAuthority(role.getKeyword()));
-                Set<Permission> permissions=role.getPermissions();
-                for (Permission permission:permissions){
+                Set<Permission> permissions = role.getPermissions();
+                for (Permission permission : permissions) {
                     //遍历权限集合，为用户授权
                     list.add(new SimpleGrantedAuthority(permission.getKeyword()));
                 }
             }
             //框架会进行密码比对(页面提交的密码和数据库中查询的密码进行比对)
-            org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User(username,"{noop}"+user.getPassword(),list);
+            org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User(username, "{noop}" + user.getPassword(), list);
             return securityUser;
         }
     }

@@ -5,7 +5,7 @@
     <!--根据用户ID查询关联的角色-->
     <select id="findByUserId" parameterType="int" resultType="com.hy.pojo.Role">
         select r.*
-          from t_role r,t_user_role ur
-          where r.id = ur.role_id and ur.user_id = #{user_id}
+        from t_role r,t_user_role ur
+        where r.id = ur.role_id and ur.user_id = #{user_id}
     </select>
 </mapper>

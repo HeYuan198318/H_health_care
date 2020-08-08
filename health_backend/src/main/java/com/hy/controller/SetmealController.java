@@ -6,7 +6,6 @@ import com.hy.constant.RedisConstant;
 import com.hy.entity.PageResult;
 import com.hy.entity.QueryPageBean;
 import com.hy.entity.Result;
-import com.hy.pojo.CheckGroup;
 import com.hy.pojo.Setmeal;
 import com.hy.service.SetmealService;
 import com.hy.utils.QiniuUtils;
@@ -38,19 +37,19 @@ public class SetmealController {
 
     //文件上传
     @RequestMapping("/upload")
-    public Result upload(@RequestParam("imgFile") MultipartFile imgFile){
+    public Result upload(@RequestParam("imgFile") MultipartFile imgFile) {
         System.out.println(imgFile);
         String originalFilename = imgFile.getOriginalFilename();//原始文件名 3bd90d2c-4e82-42a1-a401-882c88b06a1a2.jpg
         System.out.println(originalFilename);
-        int index=originalFilename.lastIndexOf(".");
-        String extention=originalFilename.substring(index-1);//.jpg 获取文件后缀
+        int index = originalFilename.lastIndexOf(".");
+        String extention = originalFilename.substring(index - 1);//.jpg 获取文件后缀
         //使用UUID随机产生文件名称，防止同名文件覆盖
         String fileName = UUID.randomUUID().toString() + extention;//FuM1Sa5TtL_ekLsdkYWcf5pyjKGu.jpg
         try {
             //将文件上传到七牛云服务器
-            QiniuUtils.upload2Qiniu(imgFile.getBytes(),fileName);
-            jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_RESOURCES,fileName);
-            return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS,fileName);
+            QiniuUtils.upload2Qiniu(imgFile.getBytes(), fileName);
+            jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_RESOURCES, fileName);
+            return new Result(true, MessageConstant.PIC_UPLOAD_SUCCESS, fileName);
         } catch (IOException e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.PIC_UPLOAD_FAIL);
@@ -60,32 +59,43 @@ public class SetmealController {
 
     //新增套餐
     @RequestMapping("/add")
-    public Result add(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
+    public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds) {
         try {
-            setmealService.add(setmeal,checkgroupIds);
-        }catch (Exception e){
+            setmealService.add(setmeal, checkgroupIds);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false,MessageConstant.ADD_SETMEAL_FAIL);
+            return new Result(false, MessageConstant.ADD_SETMEAL_FAIL);
         }
-        return new Result(true,MessageConstant.ADD_SETMEAL_SUCCESS);
+        return new Result(true, MessageConstant.ADD_SETMEAL_SUCCESS);
     }
 
     //分页查询
     @RequestMapping("/findPage")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         return setmealService.pageQuery(queryPageBean);
     }
 
     //编辑套餐
     @RequestMapping("/edit")
-    public Result edit(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
-        try{
-            setmealService.edit(setmeal,checkgroupIds);
-        }catch (Exception e){
+    public Result edit(@RequestBody Setmeal setmeal, Integer[] checkgroupIds) {
+        try {
+            setmealService.edit(setmeal, checkgroupIds);
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.EDIT_SETMEAL_FAIL);//编辑失败
         }
-        return new Result(true,MessageConstant.EDIT_SETMEAL_SUCCESS);//编辑成功
+        return new Result(true, MessageConstant.EDIT_SETMEAL_SUCCESS);//编辑成功
+    }
+
+    @RequestMapping("/deletesetmealById")
+    public Result deletesetmealById(Integer id) {
+        try {
+            setmealService.deletesetmealById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.DELETE_SETMEAL_FAIL);
+        }
+        return new Result(true, MessageConstant.DELETE_SETMEAL_SUCCESS);
     }
 
 }

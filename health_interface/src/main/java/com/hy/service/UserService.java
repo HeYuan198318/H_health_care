@@ -20,6 +20,7 @@ public interface UserService {
 
     //根据用户id查询权限id
     List<Integer> findByRoleIds(Integer id);
+
     //根据id查找用户
     User findById(Integer id);
 }

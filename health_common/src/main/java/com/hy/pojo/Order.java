@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 体检预约信息
  */
-public class Order implements Serializable{
+public class Order implements Serializable {
     public static final String ORDERTYPE_TELEPHONE = "电话预约";
     public static final String ORDERTYPE_WEIXIN = "微信预约";
     public static final String ORDERSTATUS_YES = "已到诊";

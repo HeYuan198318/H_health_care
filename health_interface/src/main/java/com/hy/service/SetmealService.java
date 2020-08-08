@@ -9,7 +9,9 @@ import java.util.Map;
 
 public interface SetmealService {
     void add(Setmeal setmeal, Integer[] checkgroupIds);
+
     PageResult pageQuery(QueryPageBean queryPageBean);
+
     List<Setmeal> findAll();
 
     Setmeal findById(Integer id);
@@ -17,4 +19,6 @@ public interface SetmealService {
     List<Map<String, Object>> findSetmealCount();
 
     void edit(Setmeal setmeal, Integer[] checkgroupIds);
+
+    void deletesetmealById(Integer id);
 }

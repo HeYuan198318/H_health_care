@@ -30,7 +30,7 @@ public class UserController {
 //                Map<String,Object> map = new HashMap<>();
 //                map.put("user",user);
 //                map.put("menus",lstMenu);
-               return new Result(true, MessageConstant.GET_USERNAME_SUCCESS,username);
+            return new Result(true, MessageConstant.GET_USERNAME_SUCCESS, username);
 
         } catch (Exception e) {
             e.printStackTrace();

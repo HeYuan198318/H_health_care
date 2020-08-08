@@ -23,45 +23,46 @@ import java.util.List;
 public class CheckGroupController {
     @Reference
     private CheckGroupService checkGroupService;
+
     //新增检查组
     @PreAuthorize("hasAuthority('CHECKGROUP_ADD')")//权限校验https://www.cnblogs.com/felordcn/p/12142497.html
     @RequestMapping("/add")
-    public Result add(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
-        try{
-            checkGroupService.add(checkGroup,checkitemIds);
-        }catch (Exception e){
+    public Result add(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds) {
+        try {
+            checkGroupService.add(checkGroup, checkitemIds);
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.ADD_CHECKGROUP_FAIL);//新增失败
         }
-        return new Result(true,MessageConstant.ADD_CHECKGROUP_SUCCESS);//新增成功
+        return new Result(true, MessageConstant.ADD_CHECKGROUP_SUCCESS);//新增成功
     }
 
     //分页查询
     @RequestMapping("/findPage")
-    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean) {
         return checkGroupService.pageQuery(queryPageBean);
     }
 
     //根据ID查询检查组findById
     @PreAuthorize("hasAuthority('CHECKGROUP_QUERY')")
     @RequestMapping("/findById")
-    public Result findById(Integer id){
+    public Result findById(Integer id) {
         try {
-            CheckGroup checkGroup=checkGroupService.findById(id);
-            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
-        }catch (Exception e){
+            CheckGroup checkGroup = checkGroupService.findById(id);
+            return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, checkGroup);
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false,MessageConstant.QUERY_CHECKGROUP_FAIL);
+            return new Result(false, MessageConstant.QUERY_CHECKGROUP_FAIL);
         }
     }
 
     //根据检查组ID查询检查组包含的多个检查项ID
     @RequestMapping("/findCheckItemIdsByCheckGroupId")
-    public Result findCheckItemIdsByCheckGroupId(Integer id){
-        try{
+    public Result findCheckItemIdsByCheckGroupId(Integer id) {
+        try {
             List<Integer> checkitemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
-            return new Result(true,MessageConstant.QUERY_CHECKITEM_SUCCESS,checkitemIds);//查询成功
-        }catch (Exception e){
+            return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, checkitemIds);//查询成功
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);//查询失败
         }
@@ -69,40 +70,41 @@ public class CheckGroupController {
 
     //查询所有检查组
     @RequestMapping("/findAll")
-    public Result findAll(){
-        try{
+    public Result findAll() {
+        try {
             List<CheckGroup> list = checkGroupService.findAll();
-            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,list);//查询成功
-        }catch (Exception e){
+            return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS, list);//查询成功
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.QUERY_CHECKGROUP_SUCCESS);//查询失败
         }
     }
+
     //编辑检查组
     @PreAuthorize("hasAuthority('CHECKGROUP_EDIT')")//权限校验
     @RequestMapping("/edit")
-    public Result edit(@RequestBody CheckGroup checkGroup,Integer[] checkitemIds){
-        try{
-            checkGroupService.edit(checkGroup,checkitemIds);
-        }catch (Exception e){
+    public Result edit(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds) {
+        try {
+            checkGroupService.edit(checkGroup, checkitemIds);
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, MessageConstant.EDIT_CHECKGROUP_FAIL);//新增失败
         }
-        return new Result(true,MessageConstant.EDIT_CHECKGROUP_SUCCESS);//新增成功
+        return new Result(true, MessageConstant.EDIT_CHECKGROUP_SUCCESS);//新增成功
     }
 
     //删除检查组
     //@Secured()//角色校验
     @PreAuthorize("hasAuthority('CHECKGROUP_DELETE')")
     @RequestMapping("/deleteGroupById")
-    public Result deleteGroupById(Integer id){
-        try{
+    public Result deleteGroupById(Integer id) {
+        try {
             checkGroupService.deleteGroupById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, MessageConstant. DELETE_CHECKGROUP_FAIL);
+            return new Result(false, MessageConstant.DELETE_CHECKGROUP_FAIL);
         }
-        return new Result(true,MessageConstant. DELETE_CHECKGROUP_SUCCESS);
+        return new Result(true, MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
 
 }

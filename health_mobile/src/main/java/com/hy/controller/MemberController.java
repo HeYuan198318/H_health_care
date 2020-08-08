@@ -33,16 +33,16 @@ public class MemberController {
 
     //手机号快速登录
     @RequestMapping("/login")
-    public Result login(HttpServletResponse response, @RequestBody Map map){
+    public Result login(HttpServletResponse response, @RequestBody Map map) {
         String telephone = (String) map.get("telephone");
         String validateCode = (String) map.get("validateCode");
         //从Redis中获取保存的验证码
         String validateCodeInRedis = jedisPool.getResource().get(telephone + RedisMessageConstant.SENDTYPE_LOGIN);
-        if(validateCodeInRedis != null && validateCode != null && validateCode.equals(validateCodeInRedis)){
+        if (validateCodeInRedis != null && validateCode != null && validateCode.equals(validateCodeInRedis)) {
             //验证码输入正确
             //判断当前用户是否为会员（查询会员表来确定）
             Member member = memberService.findByTelephone(telephone);
-            if(member == null){
+            if (member == null) {
                 //不是会员，自动完成注册（自动将当前用户信息保存到会员表）
                 member.setRegTime(new Date());//注册时间
                 member.setPhoneNumber(telephone);
@@ -50,15 +50,15 @@ public class MemberController {
             }
             //登录成功
             //向客户端浏览器写入Cookie，内容为手机号
-            Cookie cookie = new Cookie("login_member_telephone",telephone);
+            Cookie cookie = new Cookie("login_member_telephone", telephone);
             cookie.setPath("/");//路径
-            cookie.setMaxAge(60*60*24*30);//有效期30天
+            cookie.setMaxAge(60 * 60 * 24 * 30);//有效期30天
             response.addCookie(cookie);
             //将会员信息保存到Redis
             String json = JSON.toJSON(member).toString();
-            jedisPool.getResource().setex(telephone,60*30,json);
+            jedisPool.getResource().setex(telephone, 60 * 30, json);
             return new Result(true, MessageConstant.LOGIN_SUCCESS);
-        }else{
+        } else {
             //验证码输入错误
             return new Result(false, MessageConstant.VALIDATECODE_ERROR);
         }

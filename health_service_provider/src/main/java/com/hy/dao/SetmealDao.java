@@ -8,7 +8,9 @@ import java.util.Map;
 
 public interface SetmealDao {
     public void add(Setmeal setmeal);
+
     public void setSetmealAndCheckGroup(Map map);
+
     public Page<Setmeal> findByCondition(String queryString);
 
     List<Setmeal> findAll();
@@ -20,4 +22,6 @@ public interface SetmealDao {
     void edit(Setmeal setmeal);
 
     void deleteAssocication(Integer id);
+
+    void deletesetmealById(Integer id);
 }

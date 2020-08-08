@@ -21,6 +21,7 @@
     <!--批量扫描，发布服务-->
     <dubbo:annotation package="com.hy.service"/>
 
+
     <!--配置freemarker模板对象-->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <!--指定模板文件所在目录-->

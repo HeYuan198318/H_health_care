@@ -22,6 +22,7 @@ public class CheckItemServiceImpl implements CheckItemService {
     //注入DAO对象
     @Autowired
     private CheckItemDao checkItemDao;
+
     public void add(CheckItem checkItem) {
         checkItemDao.add(checkItem);
     }
@@ -32,19 +33,19 @@ public class CheckItemServiceImpl implements CheckItemService {
         Integer pageSize = queryPageBean.getPageSize();
         String queryString = queryPageBean.getQueryString();//查询条件
         //完成分页查询，基于mybatis框架提供的分页助手插件完成
-        PageHelper.startPage(currentPage,pageSize);
+        PageHelper.startPage(currentPage, pageSize);
         //select * from t_checkitem limit 0,10
         Page<CheckItem> page = checkItemDao.selectByCondition(queryString);
         long total = page.getTotal();
         List<CheckItem> rows = page.getResult();
-        return new PageResult(total,rows);
+        return new PageResult(total, rows);
     }
 
     //根据ID删除检查项
     public void deleteById(Integer id) {
         //判断当前检查项是否已经关联到检查组
         long count = checkItemDao.findCountByCheckItemId(id);
-        if(count > 0){
+        if (count > 0) {
             //当前检查项已经被关联到检查组，不允许删除
             new RuntimeException();
         }

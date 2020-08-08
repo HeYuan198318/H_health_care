@@ -14,7 +14,7 @@ import java.io.FileOutputStream;
 public class POITest {
     //使用POI读取Excel文件中的数据
     //@Test
-    public void test1() throws Exception{
+    public void test1() throws Exception {
         //加载指定文件，创建一个Excel对象（工作簿）
         XSSFWorkbook excel = new XSSFWorkbook(new FileInputStream(new File("e:\\poi.xlsx")));
         //读取Excel文件中第一个Sheet标签页
@@ -32,7 +32,7 @@ public class POITest {
 
     //使用POI读取Excel文件中的数据
     //@Test
-    public void test2() throws Exception{
+    public void test2() throws Exception {
         //加载指定文件，创建一个Excel对象（工作簿）
         XSSFWorkbook excel = new XSSFWorkbook(new FileInputStream(new File("e:\\poi.xlsx")));
         //读取Excel文件中第一个Sheet标签页
@@ -40,12 +40,12 @@ public class POITest {
         //获得当前工作表中最后一个行号，需要注意：行号从0开始
         int lastRowNum = sheet.getLastRowNum();
         System.out.println("lastRowNum = " + lastRowNum);
-        for(int i=0;i<=lastRowNum;i++){
+        for (int i = 0; i <= lastRowNum; i++) {
             XSSFRow row = sheet.getRow(i);//根据行号获取每一行
             //获得当前行最后一个单元格索引
             short lastCellNum = row.getLastCellNum();
             System.out.println("lastCellNum = " + lastCellNum);
-            for(int j=0;j<lastCellNum;j++){
+            for (int j = 0; j < lastCellNum; j++) {
                 XSSFCell cell = row.getCell(j);//根据单元格索引获得单元格对象
                 System.out.println(cell.getStringCellValue());
             }
@@ -56,7 +56,7 @@ public class POITest {
 
     //使用POI向Excel文件写入数据，并且通过输出流将创建的Excel文件保存到本地磁盘
     //@Test
-    public void test3() throws Exception{
+    public void test3() throws Exception {
         //在内存中创建一个Excel文件（工作簿）
         XSSFWorkbook excel = new XSSFWorkbook();
         //创建一个工作表对象

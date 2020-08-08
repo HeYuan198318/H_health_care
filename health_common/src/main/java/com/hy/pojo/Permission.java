@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * 权限
  */
-public class Permission implements Serializable{
+public class Permission implements Serializable {
     private Integer id;
     private String name; // 权限名称
     private String keyword; // 权限关键字，用于权限控制
